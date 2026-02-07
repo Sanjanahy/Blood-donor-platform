@@ -12,4 +12,3 @@ A web application to connect blood donors with recipients, promoting life-saving
 1. Clone the repository:
    ```bash
    git clone https://github.com/Sanjanahy/Blood-donor-platform.git
-
