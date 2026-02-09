@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Blood Requests</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Blood Requests</h1>
+    <div class="filters">
+      <select id="filterBlood">
+        <option value="">All Blood Groups</option>
+        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+      </select>
+      <input type="text" id="filterDistrict" placeholder="Search by District">
+    </div>
+    <div id="requestList"></div>
+    <script>
+      const requests = JSON.parse(localStorage.getItem('requests') || '[]');
+      const requestList = document.getElementById('requestList');
+
+      function displayRequests() {
+        const blood = document.getElementById('filterBlood').value.toLowerCase();
+        const district = document.getElementById('filterDistrict').value.toLowerCase();
+        const filtered = requests.filter(r =>
+          (!blood || r.blood.toLowerCase() === blood) &&
+          (!district || r.district.toLowerCase().includes(district))
+        );
+        requestList.innerHTML = filtered.map(r => `
+          <div class="card">
+            <h3>${r.name}</h3>
+            <p><strong>Required Blood Group:</strong> ${r.blood}</p>
+            <p><strong>District:</strong> ${r.district}</p>
+            <p><strong>Location:</strong> ${r.location}</p>
+          </div>
+        `).join('') || "<p>No requests found.</p>";
+      }
+
+      document.getElementById('filterBlood').onchange = displayRequests;
+      document.getElementById('filterDistrict').oninput = displayRequests;
+      displayRequests();
+    </script>
+  </div>
+</body>
+</html>
