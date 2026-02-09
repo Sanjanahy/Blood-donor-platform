@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Request Blood</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Request Blood</h1>
+    <form onsubmit="submitRequest(event)">
+      <input type="text" placeholder="Your Name" id="name" required>
+      <select id="blood" required>
+        <option value="">Select Blood Group</option>
+        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+      </select>
+      <input type="text" placeholder="District" id="district" required>
+      <input type="text" placeholder="Location / Hospital" id="location" required>
+      <button class="btn" type="submit">Submit Request</button>
+    </form>
+  </div>
+  <script>
+    function submitRequest(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const blood = document.getElementById('blood').value;
+      const district = document.getElementById('district').value;
+      const location = document.getElementById('location').value;
+      const requests = JSON.parse(localStorage.getItem('requests') || '[]');
+      requests.push({ name, blood, district, location });
+      localStorage.setItem('requests', JSON.stringify(requests));
+      alert("Blood request submitted!");
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>
