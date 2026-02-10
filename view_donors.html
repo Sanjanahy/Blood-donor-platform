@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Donors</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Available Blood Donors</h1>
+    <div class="filters">
+      <select id="filterBlood">
+        <option value="">All Blood Groups</option>
+        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+      </select>
+      <input type="text" id="filterDistrict" placeholder="Search by District">
+    </div>
+    <div id="donorList"></div>
+    <script>
+      const donors = JSON.parse(localStorage.getItem('donors') || '[]');
+      const donorList = document.getElementById('donorList');
+
+      function displayDonors() {
+        const blood = document.getElementById('filterBlood').value.toLowerCase();
+        const district = document.getElementById('filterDistrict').value.toLowerCase();
+        const filtered = donors.filter(d =>
+          (!blood || d.blood.toLowerCase() === blood) &&
+          (!district || d.district.toLowerCase().includes(district))
+        );
+        donorList.innerHTML = filtered.map(d => `
+          <div class="card">
+            <h3>${d.name}</h3>
+            <p><strong>Blood Group:</strong> ${d.blood}</p>
+            <p><strong>District:</strong> ${d.district}</p>
+            <p><strong>Location:</strong> ${d.location}</p>
+          </div>
+        `).join('') || "<p>No donors found.</p>";
+      }
+
+      document.getElementById('filterBlood').onchange = displayDonors;
+      document.getElementById('filterDistrict').oninput = displayDonors;
+      displayDonors();
+    </script>
+  </div>
+</body>
+</html> 
